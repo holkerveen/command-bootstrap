@@ -7,20 +7,6 @@ export type OptionType = 'bool' | 'required' | 'optional';
 
 /**
  * This class adds proper command line argument parsing to your CLI commands.
- *
- * Use https://github.com/holkerveen/typescript-trait to add the class to your Commands as a trait. Example usage:
- * ```
- * import {trait} from "../Core/trait";
- *
- * @trait(CommandHelper)
- * class YourCommand {
- *      test(){
- *          console.log()this.getArgumentsHelp());
- *      }
- * };
- * ```
- *
- * TODO add input options parsing as well as arguments
  */
 export class CommandHelper {
 
@@ -28,6 +14,7 @@ export class CommandHelper {
     private cliArguments: Argument[] = [];
     private parsedArguments: { [k: string]: string } = {};
     private parsedOptions: { [k: string]: (string | boolean) } = {};
+    private argvParsed = false;
 
     /**
      * Add Argument to the command line processor
@@ -89,7 +76,8 @@ export class CommandHelper {
 
     private parseArgv(): void {
         // TODO generate error if required argument is missing
-        if (this.parsedArguments !== null) return;
+        if (this.argvParsed) return;
+        this.argvParsed = true;
 
         this.parsedArguments = {};
         this.parsedOptions = {};
